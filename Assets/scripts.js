@@ -3,10 +3,12 @@ var Question = {
     answers: ['Correct', 'Wrong1', 'Wrong2', 'Wrong3']
 };
 
+var main = document.getElementById("Main");
+var score = 0;
 var questionList = [Question];
 
 function createQuestion(input) {
-    var main = document.getElementById("Main");
+    var correctAnswer = input.answers[0];
     var shuffledAnswers = shuffle(input.answers);
     var questionHeader = main.appendChild(document.createElement("h3"));
     questionHeader.classList.add("text-center");
@@ -16,8 +18,13 @@ function createQuestion(input) {
     for (var i = 0; i < 4; i++) {
         var currentAnswer = questionAnswers.appendChild(document.createElement("li"));
         var questionButton = currentAnswer.appendChild(document.createElement("button"));
-        questionButton.setAttribute("data", i);
+        questionButton.classList.add("button");
         questionButton.textContent = shuffledAnswers[i];
+        if (shuffledAnswers[i] === correctAnswer) {
+            questionButton.setAttribute("answer", 1);
+        } else {
+            questionButton.setAttribute("answer", 0);
+        }
     }
 
 }
@@ -42,3 +49,20 @@ function shuffle(input) {
 }
 
 createQuestion(questionList[0]);
+
+
+
+$(".button").on("click", function() {
+    if (this.getAttribute("answer") == 1) {
+        main.appendChild(document.createElement("hr"));
+        var result = main.appendChild(document.createElement("p"));
+        result.textContent = "Correct!";
+        score++;
+    } else {
+        main.appendChild(document.createElement("hr"));
+        var result = main.appendChild(document.createElement("p"));
+        result.textContent = "Wrong!";
+        // Something about lowering the timer
+        // something for the commit because I think it's broken
+    }
+});
